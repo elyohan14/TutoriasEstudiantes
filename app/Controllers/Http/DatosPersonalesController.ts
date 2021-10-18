@@ -31,8 +31,6 @@ export default class DatosPersonalesController {
 
     const profesores = await Profesore.query().select('Cedula').groupBy('Cedula')
     const profesoresJSON = profesores.map((post) => post.serialize().cedula)
-    console.log('Estudiantes:', estudiantesJSON.length)
-    console.log('Profesores:', profesoresJSON.length)
 
     let inserciones = 0
     const maxAlumnosXProfesor = Math.ceil(estudiantesJSON.length / profesoresJSON.length)
@@ -50,7 +48,6 @@ export default class DatosPersonalesController {
 
           if (cantidadAlumnosJSON.length < maxAlumnosXProfesor) {
             inserciones++
-            console.log('tutor', cedulaTutor)
             await TutoriasEstudiante.create({
               cedula_estudiante: cedulaEstudiante,
               cedula_tutor: cedulaTutor,
@@ -60,7 +57,6 @@ export default class DatosPersonalesController {
         }
       }
     }
-    console.log({ inserciones })
-    response.send(estudiantesJSON)
+    response.send('Asignación realizada')
   }
 }
